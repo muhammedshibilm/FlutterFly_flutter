@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Loginpage extends StatefulWidget {
-  const Loginpage({super.key});
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  State<Loginpage> createState() => _LoginpageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginpageState extends State<Loginpage> {
+class _SignupPageState extends State<SignupPage> {
   final TextEditingController _emaicontroller = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
+  final TextEditingController _username = TextEditingController();
 
-  void _login() {
+  void _signup() {
     String email = _emaicontroller.text;
     String password = _passwordcontroller.text;
-    if (email.isEmpty || password.isEmpty) {
+    String username = _username.text;
+    if (email.isEmpty || password.isEmpty || username.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         customSnackBar("Please fill in all fields"),
       );
     } else {
+      print("username $username");
       print("email $email");
       print("password $password");
+
       Navigator.pushNamedAndRemoveUntil(
         context,
         '/pagerouter',
@@ -42,23 +46,31 @@ class _LoginpageState extends State<Loginpage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Welcome,",
+                  "Create Account",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
                       color: Colors.blueAccent),
                 ),
-                const Text("Glad to see you!",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 40,
-                    )),
+                const Text("to get started now!",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 40)),
                 const SizedBox(
                   height: 40,
                 ),
                 Form(
                   child: Column(
                     children: [
+                      CustomTextField(
+                        controller: _username,
+                        hint: "Username",
+                        icon: FontAwesomeIcons.user,
+                        obsecure: false,
+                        textInputType: TextInputType.text,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       CustomTextField(
                         controller: _emaicontroller,
                         hint: "Email Address",
@@ -75,20 +87,8 @@ class _LoginpageState extends State<Loginpage> {
                         icon: Icons.password_outlined,
                         obsecure: true,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                              onPressed: () {
-                                print("forgot pasword is pressed");
-                              },
-                              child: const Text(
-                                "Forgot Password",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              )),
-                        ],
+                      const SizedBox(
+                        height: 20,
                       ),
                       SizedBox(
                         width: double.infinity,
@@ -96,12 +96,12 @@ class _LoginpageState extends State<Loginpage> {
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blueAccent),
                           onPressed: () {
-                            _login();
+                            _signup();
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(15.0),
                             child: Text(
-                              "Login",
+                              "Sign up",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
@@ -128,16 +128,16 @@ class _LoginpageState extends State<Loginpage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          // Handle Google login
-                          print("Google login tapped");
+                          // Handle Google
+                          print("Google  tapped");
                         },
                         child: _buildLoginButton(
                             iconData: FontAwesomeIcons.google),
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Handle Facebook login
-                          print("Facebook login tapped");
+                          // Handle Facebook
+                          print("Facebook  tapped");
                         },
                         child: _buildLoginButton(
                             iconData: FontAwesomeIcons.facebook),
@@ -147,22 +147,20 @@ class _LoginpageState extends State<Loginpage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Dont't have an account?",
+                      "Already have an account?",
                       style: TextStyle(fontSize: 19, color: Colors.blueAccent),
                     ),
                     TextButton(
                         onPressed: () {
                           Navigator.pushNamedAndRemoveUntil(
                             context,
-                            '/signuppage',
+                            '/loginpage',
                             (Route<dynamic> route) => false,
                           );
                         },
                         child: const Text(
                           "Click me",
-                          style: TextStyle(
-                            fontSize: 19,
-                          ),
+                          style: TextStyle(fontSize: 19),
                         ))
                   ],
                 )
