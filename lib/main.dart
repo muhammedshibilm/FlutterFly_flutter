@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/pages/login_page.dart';
-import 'package:flutter_project/pages/routers/pagerouter.dart';
+import 'package:flutter_project/routers/pagerouter.dart';
 import 'package:flutter_project/pages/signup_page.dart';
 
 void main() {
