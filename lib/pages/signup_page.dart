@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_project/db/service/authentication_service.dart';
 import 'package:flutter_project/db/model/user.dart';
