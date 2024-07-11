@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/db/service/authentication_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Loginpage extends StatefulWidget {
@@ -11,8 +12,9 @@ class Loginpage extends StatefulWidget {
 class _LoginpageState extends State<Loginpage> {
   final TextEditingController _emaicontroller = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
+  final AuthenticationService _service = AuthenticationService();
 
-  void _login() {
+  void _login() async {
     String email = _emaicontroller.text;
     String password = _passwordcontroller.text;
     if (email.isEmpty || password.isEmpty) {
@@ -20,13 +22,18 @@ class _LoginpageState extends State<Loginpage> {
         customSnackBar("Please fill in all fields"),
       );
     } else {
-      print("email $email");
-      print("password $password");
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/pagerouter',
-        (Route<dynamic> route) => false,
-      );
+      try {
+        await _service.login(email: email, password: password);
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/pagerouter',
+          (Route<dynamic> route) => false,
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          customSnackBar(e.toString()),
+        );
+      }
     }
   }
 
@@ -175,7 +182,6 @@ class _LoginpageState extends State<Loginpage> {
   }
 }
 
-// Custom text field
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final IconData icon;
@@ -216,7 +222,6 @@ class CustomTextField extends StatelessWidget {
   }
 }
 
-// Custom Snackbar function
 SnackBar customSnackBar(String message) {
   return SnackBar(
     content: Text(

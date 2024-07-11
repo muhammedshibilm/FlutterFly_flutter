@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_project/db/service/authentication_service.dart';
+import 'package:flutter_project/db/model/user.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SignupPage extends StatefulWidget {
@@ -12,8 +16,9 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _emaicontroller = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
   final TextEditingController _username = TextEditingController();
+  final AuthenticationService _service = AuthenticationService();
 
-  void _signup() {
+  void _signup() async {
     String email = _emaicontroller.text;
     String password = _passwordcontroller.text;
     String username = _username.text;
@@ -22,15 +27,19 @@ class _SignupPageState extends State<SignupPage> {
         customSnackBar("Please fill in all fields"),
       );
     } else {
-      print("username $username");
-      print("email $email");
-      print("password $password");
-
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/pagerouter',
-        (Route<dynamic> route) => false,
-      );
+      try {
+        User user = User(username: username, email: email, password: password);
+        await _service.singUP(user);
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/pagerouter',
+          (Route<dynamic> route) => false,
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          customSnackBar(e.toString()),
+        );
+      }
     }
   }
 
